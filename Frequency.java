@@ -12,9 +12,9 @@ import java.util.Collections;
  *  Name:           Abhi
  *  Class:          CS30S
  * 
- *  Assignment:     A1 Q2
+ *  Assignment:     A1 Q5
  * 
- *  Description:    Place a short description of your program here
+ *  Description:    Generating 50 random number that are less than 50 
  * 
  *************************************************************/
 
@@ -40,13 +40,16 @@ public class Frequency {
         
         Random rand = new Random();
         String input1 = "";
+        int tr = 0;
         int input2 = 0;
         int input = 0;
         int n = 0;
         int store = 0;
         int test = 0;
+        int counter = 0;
         int random = 0;
         int limit = 51;
+        int[] frequencyIndex2 = new int[limit];
         int[] frequencyIndex = new int[limit];
         int[] list2 = new int[limit];
         int[] list = new int[limit];
@@ -70,7 +73,7 @@ public class Frequency {
         banner = "*****************************" + nl;
         banner += "Name:        Abhi" + nl;
         banner += "Class:       CS30S" + nl;
-        banner += "Assignment:  Ax Qy" + nl;
+        banner += "Assignment:  A1 Q5" + nl;
         banner += "*****************************" + nl + nl;
 
         System.out.println(banner);
@@ -78,25 +81,19 @@ public class Frequency {
 
         // ***** Get Input *****
         
-        // for (int i = 0; i < 1000; i++) {
-            // random = rand.nextInt(limit - 1) + 1;
-            // // System.out.println(random);
-            // fout.print(random + " ");
-        // }
          strin = fin.readLine();
-        //System.out.println(strin);
         // prompt for input
         while (strin != null) {
             tokens = strin.split(delim);
             
             for (int i = 0; i < tokens.length; i++) {
                n = Integer.parseInt(tokens[i]);
-               list[n]++;
+               list2[n]++;
                //System.out.println(n);
             }
             strin = fin.readLine();
         }
-         System.out.println("List" + Arrays.toString(list));
+         System.out.println("List" + Arrays.toString(list2));
         // read input from keyboard
         
         System.out.println("Press 1 to see frequency of one number, press 2 for a range of numbers?");
@@ -104,7 +101,7 @@ public class Frequency {
         if (input == 1) {
             System.out.println("What numbers frequency do you want to see?");
             input = scanner.nextInt();
-            System.out.println("The Frequency of " + input + " is " + list[input]);
+            System.out.println("The Frequency of " + input + " is " + list2[input]);
         }
         else if (input == 2){
             System.out.println("What range of frequency do you want to see?");
@@ -112,7 +109,7 @@ public class Frequency {
             input2 = scanner.nextInt();
             
             for (int i = input -1; i < input2; i++) {
-                System.out.println("The Frequency of " + (i + 1) + " " + list[i]);
+                System.out.println("The Frequency of " + (i + 1) + " " + list2[i]);
             }
     }
     else {
@@ -120,9 +117,9 @@ public class Frequency {
     }
         // echo input back to console window
         
-        for (int i = 0; i < limit; i++) {
-            list2[i] = list[i];
-         }
+        //for (int i = 0; i < limit; i++) {
+        //    list2[i] = list[i];
+         //}
 
     System.out.println("\n----------------------------");
     System.out.println("Further frequency challenge");
@@ -131,10 +128,16 @@ public class Frequency {
     if (input == 1) {
         System.out.println("What frequency do you want to see that appears n times");
         input = scanner.nextInt();
+        
         for (int i  = 0; i < limit; i++) {
-            if (input == list[i]) {
+            if (input == list2[i]) {
                 System.out.println(i + " has a frequency of " + input);
-            }
+                counter++;
+            } 
+        }
+        if (counter == 0) {
+            System.out.println("No number contains the frequency of " + input);
+            counter = 0;
         }
     } else if(input == 2) {
             System.out.println("First type in the range of frequent numbers you want to see. Ex. 5 10");
@@ -157,7 +160,9 @@ public class Frequency {
                 frequencyIndex[j] = test;
                 store = 0;
             }
-            System.out.println("List sort" + Arrays.toString(sort));
+            
+            // System.out.println("List sort" + Arrays.toString(sort));
+            // System.out.println("List frequency" + Arrays.toString(frequencyIndex));
             if (input1.contains("most")) {
                 System.out.println("The most frequent input in the range of " + input + " to " + input2 + " contains these most frequent numbers: ");
                 for (int i = input -1; i < input2; i++) {
@@ -166,19 +171,26 @@ public class Frequency {
             }
             else if (input1.contains("least")) {
                 System.out.println("The least frequent input in the range of " + input + " to " + input2 + " contains these most frequent numbers: ");
-                
-                for (int i = input2 -1; i >= input; i--) {
-                    System.out.println("The Frequency of " + frequencyIndex[i] + " showed up " + sort[i]);
+                System.out.println(input2 + " " + input);
+                // flip the sorted from least to greatest and flip frequencyIndex aswell
+                for (int i = 50; i >= 0; i--) {
+                    list2[counter] = sort[i];
+                    frequencyIndex2[counter] = frequencyIndex[i];
+                    counter++;
+                }
+                // System.out.println("List frequency" + Arrays.toString(frequencyIndex2));
+                for (int i = input2; i >= input; i--) {
+                    System.out.println("The Frequency of " + frequencyIndex2[i] + " showed up " + list2[i]);
                 }
             }
             else {
-                System.out.println("Error");
+                System.out.println("Error");    // just incase
             }
             }
         
      else {
-        System.out.println("Error");
-    
+        System.out.println("Error");    // if input is anything other than 1 or 2
+        
     }
         // ***** Main Processing *****
 
