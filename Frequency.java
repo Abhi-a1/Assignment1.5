@@ -14,7 +14,9 @@ import java.util.Collections;
  * 
  *  Assignment:     A1 Q5
  * 
- *  Description:    Generating 50 random number that are less than 50 
+ *  Description:    Generating 1000 random number that are less than 50. Using
+ *                  these numbers to see the frequency and other features. Sorting
+ *                  from greatest to lowest and vice versa.
  * 
  *************************************************************/
 
@@ -36,24 +38,25 @@ public class Frequency {
 
         // a new line character that works on every computer system
         String nl = System.lineSeparator();
+        BufferedReader fin = null;  // declare the file input variable
+
         
-        
-        Random rand = new Random();
-        String input1 = "";
-        int tr = 0;
-        int input2 = 0;
-        int input = 0;
-        int n = 0;
-        int store = 0;
-        int test = 0;
-        int counter = 0;
-        int random = 0;
+        String input1 = ""; // to see if input is "greatest" or "least"
+        int input2 = 0; // to see range of frequency
+        int input = 0;  // general input
+        int n = 0;  // using as index
+        int store = 0;  // store
+        int location = 0;   // to get frequency index 
+        int counter = 0;    // universal use in this program
         int limit = 51;
-        int[] frequencyIndex2 = new int[limit];
-        int[] frequencyIndex = new int[limit];
-        int[] list2 = new int[limit];
-        int[] list = new int[limit];
-        int[] sort = new int[limit];
+        
+        // arrays
+        int[] frequencyIndex2 = new int[limit]; // for flipped frequency index
+        int[] frequencyIndex = new int[limit];  // normal frequency index
+        
+        int[] list2 = new int[limit];   // list with all numbers
+        
+        int[] sort = new int[limit];    // sorted from greatest to least
         // ***** objects *****
 
         Scanner scanner = new Scanner(System.in);
@@ -66,7 +69,11 @@ public class Frequency {
         // file io buffers for reading and writing to text files
 
         //PrintWriter fout = new PrintWriter(new BufferedWriter(new FileWriter("outFile.txt")));
-        BufferedReader fin = new BufferedReader(new FileReader("outFile.txt"));
+           try {
+        fin = new BufferedReader(new FileReader("outFile.txt"));
+    }catch(FileNotFoundException e) {
+            System.out.println("file not found");
+    }
 
         // ***** print banners *****
 
@@ -93,7 +100,7 @@ public class Frequency {
             }
             strin = fin.readLine();
         }
-         System.out.println("List" + Arrays.toString(list2));
+         // System.out.println("List" + Arrays.toString(list2));
         // read input from keyboard
         
         System.out.println("Press 1 to see frequency of one number, press 2 for a range of numbers?");
@@ -113,14 +120,11 @@ public class Frequency {
             }
     }
     else {
-        System.out.println("Error");
+        System.out.println("Error");    // if some other number inputed
     }
         // echo input back to console window
-        
-        //for (int i = 0; i < limit; i++) {
-        //    list2[i] = list[i];
-         //}
-
+      
+        // Further frequency challenge
     System.out.println("\n----------------------------");
     System.out.println("Further frequency challenge");
     System.out.println("Press 1 to see a number that appears n times, Press 2 to see most/least frequant");
@@ -128,7 +132,7 @@ public class Frequency {
     if (input == 1) {
         System.out.println("What frequency do you want to see that appears n times");
         input = scanner.nextInt();
-        
+        // loops through list2 and tries to find a match. If no match found counter = 0
         for (int i  = 0; i < limit; i++) {
             if (input == list2[i]) {
                 System.out.println(i + " has a frequency of " + input);
@@ -137,45 +141,54 @@ public class Frequency {
         }
         if (counter == 0) {
             System.out.println("No number contains the frequency of " + input);
-            counter = 0;
+            counter = 0;    // to use for other processing
         }
     } else if(input == 2) {
             System.out.println("First type in the range of frequent numbers you want to see. Ex. 5 10");
             System.out.println("Followed by 'most' or 'least' frequent");
 
-            input = scanner.nextInt();
-            input2 = scanner.nextInt();
-            input1 = scanner.nextLine();
+            input = scanner.nextInt();  // first range
+            input2 = scanner.nextInt(); // second range
+            input1 = scanner.nextLine();    // most or least
+            
+            // Sort from greatest to least
             for (int j = 0; j < limit; j++) {
+                
+                // inefficent - loops through it multiple times to sort from greatest to least
                 for (int k = 0; k < limit; k++) {
+                    // will loop through list2. Trying to find greatest number and sorting it
                     if (list2[k] > store) {
-                        store = list2[k];
-                        test = k;
+                        store = list2[k];   // store will change to the greatest number
+                        location = k;
                        // System.out.println(store + " " +  list2[k] + " " + test);
                     }
                     //System.out.println(list2[k]);
                 }
-                sort[j] = store;
-                list2[test] = 0;
-                frequencyIndex[j] = test;
-                store = 0;
+                sort[j] = store;    // the greatest number will be stored in index as it loops
+                list2[location] = 0;    // test will be the value of k - how many times it has looped. The number will be removed and replaced by 0.
+                frequencyIndex[j] = location;   // to get the location of the sorted numbers
+                store = 0;  // reset store
             }
             
             // System.out.println("List sort" + Arrays.toString(sort));
             // System.out.println("List frequency" + Arrays.toString(frequencyIndex));
+            
+            // Calculations
+            // keeps organization as it is
             if (input1.contains("most")) {
                 System.out.println("The most frequent input in the range of " + input + " to " + input2 + " contains these most frequent numbers: ");
                 for (int i = input -1; i < input2; i++) {
                     System.out.println("The Frequency of " + frequencyIndex[i] + " showed up " + sort[i]);
                 }
             }
+            // flips the sort array to get least to most
             else if (input1.contains("least")) {
                 System.out.println("The least frequent input in the range of " + input + " to " + input2 + " contains these most frequent numbers: ");
                 System.out.println(input2 + " " + input);
                 // flip the sorted from least to greatest and flip frequencyIndex aswell
                 for (int i = 50; i >= 0; i--) {
-                    list2[counter] = sort[i];
-                    frequencyIndex2[counter] = frequencyIndex[i];
+                    list2[counter] = sort[i];   // as counter goes up i goes down
+                    frequencyIndex2[counter] = frequencyIndex[i];   // same for this
                     counter++;
                 }
                 // System.out.println("List frequency" + Arrays.toString(frequencyIndex2));
@@ -184,7 +197,7 @@ public class Frequency {
                 }
             }
             else {
-                System.out.println("Error");    // just incase
+                System.out.println("Error");    // if input does not contain least or most
             }
             }
         
